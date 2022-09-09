@@ -89,3 +89,17 @@ Moreon I’d like to add some considerations from the task and what I remember o
 ### Final notes
 
 I’d like to point out that it would be also nice to follow the new eIdas 2.0 framework evolution as some of the requirements for the European Digital Identity wallet include references to **device** and **cloud signature** of documents and if could affect to the product development. I’ve been working with Digital Identity solutions for the last 3 years. 
+
+## Update 1
+
+Regarding threshold signatures: 2 out of 2 is just a specific case of n out of m, so the same principles apply to both cases, indeed I really doubt that any code would work different both 2/2 or n/m, it would raise concerns on the security of the algorithm and that has been already proved.
+
+
+I've been reviewing ZenGo (https://zengo.com/) to find out a few interesting bits:
+
+1. **Different levels of thereshold**. ZenGo uses 2 out of 2 but they public library https://github.com/ZenGo-X/multi-party-ecdsa is built to work with n out of m (explicit example of multi-party: https://github.com/ZenGo-X/multi-party-ecdsa/tree/master/src/protocols) . This is a deseign decision, if the raise the threshold lets say to 3/5 there 5 shares have to be securely stored and the 3 parts that need to be collected should be accesible to the user anytime he needs to sign a transaction. They even have an example to deploy and test in which 3 shares are used.
+2. **Security**. https://zengo.com/security-in-depth/ they base all the securitiy un 2 out of 2 shares of threshold signatures. Not bad, just pointing it out.
+3. **Recovery**. The recovery of the user shard is done via biometric scan of the face, nice idea and Apple has demostrated that it works most of the time (some cases where a user could unlock other user device rose in some asian market a few ago, it not a big issue). This idea or similar could cope with the "A private key is never generated to create a new wallet" requirement given in the TestTask. Anyway it would require a Biometric security module as biometrics usually work with some tolerances that have to be handled prior to generate always the same key.
+   1. An alternative to this may be the use of ID scanning SDKs. I've seen a couple of them *ReadID* and *Entrust* that can use NFC capabilities in a phone to scan the National ID / Passport and that information could be used for **KYC** and maybe part of initial key generation.
+5. **Product security audit**. They passed four of them between 2019 and 2020, Kudelski was passed twice the same that was used in the two libraries I pointed in the first part of the report.
+6. Indeed I'd like to progress further with https://github.com/cryptochill/tss-ecdsa-cli that mentions "Includes support for HD keys (BIP32). HD support based on https://github.com/trepca/multi-party-ecdsa/tree/hd-support." and it could be very nice with the biometric seed.
